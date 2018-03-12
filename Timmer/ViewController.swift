@@ -106,9 +106,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath as IndexPath)
-        cell.textLabel?.text = String(indexPath.row + 1) + "   " + timeArray[indexPath.row]
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath as IndexPath) as! TableViewCell
+//        cell.textLabel?.text = String(indexPath.row + 1) + "   " + timeArray[indexPath.row]
+        cell.textLabel?.text = String(indexPath.row + 1) + "   " + timeArray[indexPath.row];
         return cell
         
     }
