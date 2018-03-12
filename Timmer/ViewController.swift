@@ -16,11 +16,11 @@ let CONTINUE = "CONTINUE"
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
    
 
-    @IBOutlet weak var startBtn: UIBarButtonItem!
-    @IBOutlet weak var pauseBtn: UIButton!
-    @IBOutlet weak var recordTable: UITableView!
-    @IBOutlet weak var timerLabel: UILabel!
-    @IBOutlet weak var recordBtn: UIButton!
+    @IBOutlet fileprivate weak var startBtn: UIBarButtonItem!
+    @IBOutlet fileprivate weak var pauseBtn: UIButton!
+    @IBOutlet fileprivate weak var recordTable: UITableView!
+    @IBOutlet fileprivate weak var timerLabel: UILabel!
+    @IBOutlet fileprivate weak var recordBtn: UIButton!
     
     fileprivate var timer : Timer!
     fileprivate var nowTime = 0;
@@ -30,8 +30,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.recordTable.dataSource = self;
-        self.recordTable.delegate = self;
+        recordTable.dataSource = self;
+        recordTable.delegate = self;
+        recordTable.register(UINib.init(nibName: "DataCell", bundle: nil), forCellReuseIdentifier: "Cell")
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,9 +54,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             timerLabel.text = timeString(time: TimeInterval(nowTime))
             self.navigationItem.rightBarButtonItem?.title = START;
             pauseBtn.setTitle(PAUSE, for: .normal);
+            pauseBtn.isSelected = false;
             pauseTag = false;
             timeArray.removeAll();
             recordTable.reloadData();
+            
         }
     }
     
@@ -74,11 +77,13 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 setTimeInit()
                 pauseTag = false;
                 pauseBtn.setTitle(PAUSE, for: .normal)
+                pauseBtn.isSelected = false;
             }
             else{
                 timer.invalidate()
                 pauseTag = true;
                 pauseBtn.setTitle(CONTINUE, for: .normal)
+                pauseBtn.isSelected = true;
             }
         }
     }
@@ -106,9 +111,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath as IndexPath) as! TableViewCell
+        let cell = recordTable.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DataCell
 //        cell.textLabel?.text = String(indexPath.row + 1) + "   " + timeArray[indexPath.row]
-        cell.textLabel?.text = String(indexPath.row + 1) + "   " + timeArray[indexPath.row];
+        cell.timeCell = timeArray[indexPath.row];
+        cell.indexCell = indexPath.row + 1
         return cell
         
     }

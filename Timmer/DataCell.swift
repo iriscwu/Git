@@ -1,5 +1,5 @@
 //
-//  TableViewCell.swift
+//  DataCell.swift
 //  Timmer
 //
 //  Created by Iris.Wu on 2018/3/12.
@@ -8,8 +8,24 @@
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class DataCell: UITableViewCell {
 
+    @IBOutlet fileprivate weak var timeLabel: UILabel!
+    @IBOutlet fileprivate weak var indexLabel: UILabel!
+    
+    
+    internal var timeCell = "" {
+        didSet {
+            timeLabel?.text = timeCell
+        }
+    }
+    
+    internal var indexCell = 1 {
+        didSet {
+            indexLabel?.text = "\(indexCell)"
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -19,11 +35,6 @@ class TableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    
-    override func setNeedsLayout() {
-        self.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
-       
     }
 
 }
